@@ -1,3 +1,33 @@
+# Reddit Clone(In-Progress)
+It is a Web-App project of reddit clone from scratch
+
+<p>
+<hr>
+<p> 
+
+## Technology
+* React
+* Firebase
+* Next.js
+* Chakra UI 
+* TypeScript
+
+<p>
+<hr>
+<p> 
+
+## Features
+* Authentication
+* Firestore database
+* Cloud functions
+* Security rules 
+* Transactions 
+* Deployment and more.
+
+<p>
+<hr>
+<p> 
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
