@@ -21,7 +21,9 @@ const SignUp: React.FC = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (error) setError("");
+    if (error){
+      setError("");
+    } 
 
     if (signUpForm.password !== signUpForm.confirmPassword) {
       //Set Error
@@ -90,7 +92,7 @@ const SignUp: React.FC = () => {
 
       <Input
         required
-        name="ConfirmPassword"
+        name="confirmPassword"
         placeholder="Confirm Password"
         type="password"
         mb={2}
