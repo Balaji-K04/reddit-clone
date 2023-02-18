@@ -18,7 +18,7 @@ const OAuthButtons: React.FC = () => {
         Continue with Google
       </Button>
       <Button variant="oauth">Some Other Provider</Button>
-      {error && <Text>{error.message}</Text> }
+      {error && <Text>{error.message}</Text>}
     </Flex>
   );
 };

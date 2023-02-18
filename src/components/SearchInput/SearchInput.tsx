@@ -10,7 +10,7 @@ import { User } from "firebase/auth";
 import React from "react";
 
 type SearchInputProps = {
-  user?: User|null;
+  user?: User | null;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
