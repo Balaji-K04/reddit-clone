@@ -18,9 +18,17 @@ import {
 } from "@chakra-ui/react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+  Transaction,
+} from "firebase/firestore";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { async } from "@firebase/util";
 
 type CreateCommunityModalProps = {
   open: boolean;
@@ -73,24 +81,29 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
       const communityDocRef = doc(firestore, "communities", communityName);
 
-      //Check if community exist in db
-      const communityDoc = await getDoc(communityDocRef);
+      await runTransaction(firestore, async (transaction) => {
+        //Check if community exist in db
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(`Sorry, r/${communityName} is taken. Try another.`);
+        }
 
-      if (communityDoc.exists()) {
-        throw new Error(`Sorry, r/${communityName} is taken. Try another.`);
-        return;
-      }
+        //Create community
+        transaction.set(communityDocRef, {
+          createrId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberoOfMembers: 1,
+          privacyType: communityType,
+        });
 
-      //Create community
-      //createrId
-      //createdAt,
-      //numberOfmember
-      //PrivacyType
-      await setDoc(communityDocRef, {
-        createrId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberoOfMembers: 1,
-        privacyType: communityType,
+        //Create communitySnippet on user
+        transaction.set(
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          {
+            communityId: communityName,
+            isModerator: true,
+          }
+        );
       });
     } catch (error: any) {
       console.log("handle create community error", error);
